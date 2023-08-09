@@ -10,4 +10,5 @@ PyYAML==6.0.1
 dill==0.3.7
 pyod==1.1.0
 pytest-shutil==1.7.0
+fastapi==0.101.0
 -e .
