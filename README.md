@@ -87,11 +87,11 @@ The dataset is available on Kaggle, offering researchers and data enthusiasts th
 
 ## Project Archietecture
 
-![image](https://github.com/SuyodhanJ6/Money-Laundering-Prevention/blob/main/flowchart/Project_Archietecture.png)
+![image](https://user-images.githubusercontent.com/57321948/193536768-ae704adc-32d9-4c6c-b234-79c152f756c5.png)
 
 ## Deployment Archietecture
 
-![image](/home/suyodhan/Money-Laundering-Prevention/flowchart/Deployment_Archietecture.png)
+![image](https://user-images.githubusercontent.com/57321948/193536973-4530fe7d-5509-4609-bfd2-cd702fc82423.png)
 
 ### Step 1: Clone the repository
 
