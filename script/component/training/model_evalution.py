@@ -95,6 +95,8 @@ class ModelEvaluation:
             # Get true labels
             y_true = df[TARGET_COLUMN]
             y_true = y_true.replace(TargetValueMapping().to_dict())  # Apply label mapping
+            y_true = y_true.astype(int)
+
             df.drop(TARGET_COLUMN, axis=1, inplace=True)  # Drop the target column
 
             # Get paths to trained and latest models

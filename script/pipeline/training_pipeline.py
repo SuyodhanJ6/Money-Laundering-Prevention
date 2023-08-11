@@ -231,6 +231,7 @@ class TrainPipeline:
         Version: 1.0
         """
         try:
+            TrainPipeline.is_pipeline_running = True
             # Start the data ingestion process
             data_ingestion_artifact = self.start_data_ingestion()
 
@@ -250,10 +251,16 @@ class TrainPipeline:
             model_eval_artifact = self.start_model_evaluation(data_validation_artifact=data_validation_artifact, 
                                                             model_trainer_artifact=model_trainer_artifact)
 
+            if not model_eval_artifact.is_model_accepted:
+                raise Exception("Trained model is not better than the best model")
+            
             # Start the model pusher process using the model evaluation artifact
             model_pusher_artifact = self.start_model_pusher(
-                model_eval_artifact=model_eval_artifact)
+                model_eval_artifact=model_eval_artifact)\
+                
+            TrainPipeline.is_pipeline_running=False
             
         except Exception as e:
+            TrainPipeline.is_pipeline_running=False
             # If an exception occurs, raise it with error details
             raise MoneyLaunderingException(e, sys)

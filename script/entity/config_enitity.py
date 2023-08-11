@@ -3,6 +3,7 @@ from datetime import datetime
 
 from script.constant import TIMESTAMP
 from script.constant.training_pipeline import *
+from script.constant import prediction_pipeline
 from script.exception import MoneyLaunderingException
 from script.logger import logging
 
@@ -68,7 +69,6 @@ class DataIngestionConfig:
 
         
 
-
 class DataValidationConfig:
     def __init__(self, training_pipeline_config: TrainingPipelineConfig):
         """
@@ -112,6 +112,7 @@ class DataValidationConfig:
 
 
 
+
 class DataTransformationConfig:
     def __init__(self,training_pipeline_config:TrainingPipelineConfig):
         self.data_transformation_dir: str = os.path.join( training_pipeline_config.artifact_dir,DATA_TRANSFORMATION_DIR_NAME )
@@ -121,6 +122,8 @@ class DataTransformationConfig:
             TEST_FILE_NAME.replace("csv", "npy"), )
         self.transformed_object_file_path: str = os.path.join( self.data_transformation_dir, DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,
             PREPROCSSING_OBJECT_FILE_NAME,)
+
+
 
 
 class DataTransformationConfig:
@@ -152,6 +155,9 @@ class DataTransformationConfig:
             self.data_transformation_dir,
             DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,
             PREPROCSSING_OBJECT_FILE_NAME)
+
+
+
 
 class ModelTrainerConfig:
     def __init__(self, training_pipeline_config: TrainingPipelineConfig):
@@ -236,3 +242,30 @@ class ModelPusherConfig:
 
         # Path for saving the model
         self.saved_model_path = os.path.join(SAVED_MODEL_DIR, f"{timestamp}", MODEL_FILE_NAME)
+
+
+class PredictionPipelineConfig:
+    def __init__(self):
+        """
+        Method Name: __init__
+        Description: Initializes the TrainingPipelineConfig with default or provided settings.
+        
+        Input:
+        - timestamp (str): Timestamp to identify the pipeline instance
+        
+        On Failure: Raises an exception if there's an error during initialization.
+        
+        Version: 1.0
+        """
+        try:
+            # Initialize class attributes with default or provided settings
+            
+            data_file_path: str = prediction_pipeline.PREDICTION_INPUT_FILE_NAME
+
+            # model_file_path: str = os.path.join(MODEL_PUSHER_S3_KEY, MODEL_FILE_NAME)
+        
+        except Exception as e:
+            # If an exception occurs during initialization, raise it with error details
+            raise MoneyLaunderingException(e)
+        
+
