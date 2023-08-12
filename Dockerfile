@@ -15,3 +15,5 @@ RUN pip install -r requirements.txt
 
 # Specify the command to run when the container starts
 CMD ["python3", "app.py"]
+
+# Specify the command to run when the container
