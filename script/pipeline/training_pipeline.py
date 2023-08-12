@@ -8,6 +8,9 @@ from script.component.training.data_transformation import DataTransformation
 from script.component.training.model_trainer import ModelTrainer
 from script.component.training.model_evalution import ModelEvaluation
 from script.component.training.model_pusher import ModelPusher
+from script.cloud_storage.s3_syncer import S3Sync
+from script.constant.s3_bucket import TRAINING_BUCKET_NAME
+from script.constant.training_pipeline import SAVED_MODEL_DIR
 
 from script.logger import logging
 from script.exception import MoneyLaunderingException
@@ -27,6 +30,7 @@ class TrainPipeline:
         try:
             # Initialize the training pipeline configuration
             self.training_pipeline_config = TrainingPipelineConfig()
+            self.s3_sync = S3Sync()
         except Exception as e:
             # If an exception occurs during initialization, raise it with error details
             raise MoneyLaunderingException(e, sys)
@@ -220,6 +224,51 @@ class TrainPipeline:
             raise MoneyLaunderingException(e, sys)
 
 
+    def sync_artifact_dir_to_s3(self):
+        """
+        Method Name: sync_artifact_dir_to_s3
+        Description: Syncs the local artifact directory to an Amazon S3 bucket.
+        
+        Output: None
+        On Failure: Writes an exception log and raises an exception.
+        
+        Version: 1.0
+        """
+        try:
+            # Construct the AWS bucket URL
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/artifact/{self.training_pipeline_config.timestamp}"
+            
+            # Sync the local artifact directory to S3 bucket
+            self.s3_sync.sync_folder_to_s3(folder=self.training_pipeline_config.artifact_dir, aws_bucket_url=aws_bucket_url)
+        
+        except Exception as e:
+            # If an exception occurs during synchronization, raise it with error details
+            raise MoneyLaunderingException(e, sys)
+
+        
+
+    def sync_saved_model_dir_to_s3(self):
+        """
+        Method Name: sync_saved_model_dir_to_s3
+        Description: Syncs the local saved model directory to an Amazon S3 bucket.
+        
+        Output: None
+        On Failure: Writes an exception log and raises an exception.
+        
+        Version: 1.0
+        """
+        try:
+            # Construct the AWS bucket URL
+            aws_bucket_url = f"s3://{TRAINING_BUCKET_NAME}/{SAVED_MODEL_DIR}"
+            
+            # Sync the local saved model directory to S3 bucket
+            self.s3_sync.sync_folder_to_s3(folder=SAVED_MODEL_DIR, aws_bucket_url=aws_bucket_url)
+
+        except Exception as e:
+            # If an exception occurs during synchronization, raise it with error details
+            raise MoneyLaunderingException(e, sys)
+
+
 
     def run_pipeline(self):
         """
@@ -256,11 +305,20 @@ class TrainPipeline:
             
             # Start the model pusher process using the model evaluation artifact
             model_pusher_artifact = self.start_model_pusher(
-                model_eval_artifact=model_eval_artifact)\
+                model_eval_artifact=model_eval_artifact)
                 
             TrainPipeline.is_pipeline_running=False
+
+            # Sync the entire artifact directory to the designated Amazon S3 bucket.
+            self.sync_artifact_dir_to_s3()
+
+            # Sync the saved model directory to the specified Amazon S3 bucket.
+            self.sync_saved_model_dir_to_s3()
+
+
             
         except Exception as e:
-            TrainPipeline.is_pipeline_running=False
+            self.sync_artifact_dir_to_s3()
+            TrainPipeline.is_pipeline_running=False 
             # If an exception occurs, raise it with error details
             raise MoneyLaunderingException(e, sys)
