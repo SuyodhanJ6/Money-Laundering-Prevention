@@ -102,11 +102,11 @@ git clone https://github.com/SuyodhanJ6/Money-Laundering-Prevention.git
 ### Step 2- Create a conda environment after opening the repository
 
 ```bash
-conda create -n venv python=3.7.6 -y
+conda create -p venv python=3.7.6 -y
 ```
 
 ```bash
-conda activate venv
+conda activate venv/
 ```
 
 ### Step 3 - Install the requirements
