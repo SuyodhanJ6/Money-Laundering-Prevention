@@ -8,15 +8,47 @@ from script.constant.applicaton import APP_HOST, APP_PORT
 from script.pipeline.prediction_pipeline import PredictionPipeline
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response
-from uvicorn import run as run_app
-
+from starlette.responses import RedirectResponse
+from uvicorn import run as app_run
 
 
 app = FastAPI()
 
+origins = ["*"]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.get("/", tags=["authentication"])
+async def index():
+    return RedirectResponse(url="/docs")
+
+    
+
 @app.get("/train")
-async def train_route():
+async def trainRouteClient():
+    try:
+        train_pipeline = TrainPipeline()
+
+        train_pipeline.run_pipeline()
+
+        return Response("Training successful !!")
+
+    except Exception as e:
+        return Response(f"Error Occurred! {e}")
+
+    
+
+@app.get("/predict")
+async def predictRouteClient():
     try:
         prediction_pipeline = PredictionPipeline()
 
@@ -25,19 +57,9 @@ async def train_route():
         return Response(
             "Prediction successful and predictions are stored in s3 bucket !!"
         )
-
-    except Exception as e:
-        return Response(f"Error Occurred! {e}")
-    
-
-@app.get("/predict")
-async def predict_route():
-    try:
-        pass
-
     except Exception as e:
         return Response(f"Error Occurred! {e}")
 
 if __name__ == "__main__":
-    run_app(app=app, host= APP_HOST, port= APP_PORT)
+    app_run(app=app, host= APP_HOST, port= APP_PORT)
     
