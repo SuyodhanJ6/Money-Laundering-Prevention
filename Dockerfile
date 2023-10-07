@@ -15,6 +15,6 @@ RUN pip install -r requirements.txt
 
 # Specify the command to run when the container starts
 # CMD ["python3", "app.py"]
-CMD ["uvicorn", "app:app"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8080"]
 
 # Specify the command to run when the container
