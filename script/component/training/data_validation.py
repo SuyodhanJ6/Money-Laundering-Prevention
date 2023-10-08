@@ -59,7 +59,7 @@ class DataValidation:
             logging.info("Reading data from '%s'", file_path)
             return pd.read_csv(file_path)
         except Exception as e:
-            logging.error("Error occurred while reading data from '%s': %s", file_path, str(e))
+            #("Error occurred while reading data from '%s': %s", file_path, str(e))
             raise MoneyLaunderingException(e, sys)
 
         
@@ -88,7 +88,7 @@ class DataValidation:
                 return False
 
         except Exception as e:
-            logging.error("Error occurred during number of columns validation: %s", str(e))
+            #("Error occurred during number of columns validation: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
         
@@ -138,7 +138,7 @@ class DataValidation:
 
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred during numerical columns validation: %s", str(e))
+            #("Error occurred during numerical columns validation: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
     # def txId_has_unique_values(self, dataframe : pd.DataFrame) -> bool:
@@ -188,7 +188,7 @@ class DataValidation:
 
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred during 'Time_step' validation: %s", str(e))
+            #("Error occurred during 'Time_step' validation: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
     
@@ -241,7 +241,7 @@ class DataValidation:
 
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred during class label validation: %s", str(e))
+            #("Error occurred during class label validation: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
         
@@ -311,7 +311,7 @@ class DataValidation:
             
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred during dataset drift detection: %s", str(e))
+            #("Error occurred during dataset drift detection: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
         
@@ -394,7 +394,7 @@ class DataValidation:
             return data_validation_artifact
 
         except Exception as e:
-            logging.error("Error occurred during data validation: %s", str(e))
+            #("Error occurred during data validation: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
 

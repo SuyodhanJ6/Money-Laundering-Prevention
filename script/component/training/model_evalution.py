@@ -163,5 +163,5 @@ class ModelEvaluation:
             return model_evaluation_artifact
 
         except Exception as e:
-            logging.error("An error occurred during model evaluation: %s", str(e))
+            #("An error occurred during model evaluation: %s", str(e))
             raise MoneyLaunderingException(e, sys)

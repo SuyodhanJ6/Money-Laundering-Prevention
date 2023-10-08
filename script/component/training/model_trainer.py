@@ -69,7 +69,7 @@ class ModelTrainer:
             return random_forest
         
         except Exception as e:
-            logging.error("Error occurred in train_model method: %s", str(e))
+            #("Error occurred in train_model method: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
 
@@ -148,7 +148,7 @@ class ModelTrainer:
             return model_trainer_artifact
 
         except Exception as e:
-            logging.error("Error occurred in initiate_model_trainer method: %s", str(e))
+            #("Error occurred in initiate_model_trainer method: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
         

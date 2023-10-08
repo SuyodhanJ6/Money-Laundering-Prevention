@@ -27,7 +27,7 @@ class S3Sync:
         
         except Exception as e:
             # If an exception occurs, raise it with error details
-            logging.error(f"Error during synchronization: {e}")
+            #(f"Error during synchronization: {e}")
             raise MoneyLaunderingException(e, sys)
 
 
@@ -52,5 +52,5 @@ class S3Sync:
         
         except Exception as e:
             # If an exception occurs, raise it with error details
-            logging.error(f"Error during synchronization: {e}")
+            #(f"Error during synchronization: {e}")
             raise MoneyLaunderingException(e, sys)

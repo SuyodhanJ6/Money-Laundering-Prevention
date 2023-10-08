@@ -60,7 +60,7 @@ class DataTransformation:
 
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred while reading data from '%s': %s", file_path, str(e))
+            # #("Error occurred while reading data from '%s': %s", file_path, str(e))
             raise MoneyLaunderingException(e, sys)
 
 
@@ -95,7 +95,7 @@ class DataTransformation:
             return preprocessor
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred in get_data_transformer_object: %s", str(e))
+            #("Error occurred in get_data_transformer_object: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
 
@@ -170,6 +170,6 @@ class DataTransformation:
 
         except Exception as e:
             # Log the error and raise an exception
-            logging.error("Error occurred during data transformation: %s", str(e))
+            #("Error occurred during data transformation: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 

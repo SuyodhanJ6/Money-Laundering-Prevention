@@ -91,5 +91,5 @@ class ModelPusher:
 
         except Exception as e:
             # If an exception occurs during model pushing, log the error and raise an exception
-            logging.error("Error occurred during model pushing: %s", str(e))
+            #("Error occurred during model pushing: %s", str(e))
             raise MoneyLaunderingException(e, sys)

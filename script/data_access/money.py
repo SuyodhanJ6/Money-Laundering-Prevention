@@ -66,7 +66,7 @@ class Money:
 
         except Exception as e:
             # If an exception occurs during the operation, log it and raise an exception
-            # logging.error("Error occurred while reading CSV files: %s", str(e))
+            # #("Error occurred while reading CSV files: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
     
@@ -140,6 +140,6 @@ class Money:
             
         except Exception as e:
             # # If an exception occurs during the operation, log it and raise an exception
-            # logging.error("Error occurred while merging datasets: %s", str(e))
+            # #("Error occurred while merging datasets: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 

@@ -63,7 +63,6 @@ class DataIngestion:
             return dataframe
         
         except Exception as e:
-            logging.error("Error occurred during dataset export: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
 
@@ -99,7 +98,6 @@ class DataIngestion:
             logging.info("Train and test sets exported to CSV files.")
             
         except Exception as e:
-            logging.error("Error occurred during train-test split: %s", str(e))
             raise MoneyLaunderingException(e,sys)
 
 
@@ -141,6 +139,5 @@ class DataIngestion:
             return data_ingestion_artifact
 
         except Exception as e:
-            logging.error("Error occurred during data ingestion: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
