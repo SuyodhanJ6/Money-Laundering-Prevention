@@ -2,6 +2,7 @@ import os, sys
 from pandas import DataFrame
 import pandas as pd 
 import numpy as np
+import boto3
 
 from script.logger import logging
 from script.exception import MoneyLaunderingException
@@ -73,23 +74,74 @@ class PredictionPipeline:
             raise MoneyLaunderingException(e, sys)
         
 
-    def initiate_prediction(self,) -> None:
+
+    def save_local(self, predicted_dataframe, file_path):
+        try:
+            predicted_dataframe.to_csv(file_path, index=False)
+            logging.info(f"Saved prediction results to {file_path}")
+        except Exception as e:
+            raise MoneyLaunderingException(e, sys)
+        
+
+    def save_to_s3(self, predicted_dataframe, s3_bucket_name, s3_object_key):
+        try:
+            s3_client = boto3.client('s3')
+
+            # Convert DataFrame to CSV as bytes
+            csv_buffer = predicted_dataframe.to_csv(index=False).encode('utf-8')
+
+            # Upload to S3
+            s3_client.put_object(Bucket=s3_bucket_name, Key=s3_object_key, Body=csv_buffer)
+
+            logging.info(f"Saved prediction results to S3 bucket: {s3_bucket_name}/{s3_object_key}")
+        except Exception as e:
+            raise MoneyLaunderingException(e, sys)
+
+    def initiate_prediction(self) -> pd.DataFrame:
         try:
             dataframe = self.get_data()
-
             predicted_arr = self.predict(dataframe)
-            
             prediction = pd.DataFrame(list(predicted_arr))
-
             prediction.columns = ["class"]
-
             prediction.replace(TargetValueMapping().reverse_mapping(), inplace=True)
-
             predicted_dataframe = pd.concat([dataframe, prediction], axis=1)
             
-            logging.info("Uploaded artifacts folder to s3 bucket_name")
+            # Save locally
+            local_file_path = "predicted_results.csv"
+            self.save_local(predicted_dataframe, local_file_path)
+
+            # Save to S3
+            s3_bucket_name = "money-laund-datasource"
+            s3_object_key = "predicted_results.csv"
+            self.save_to_s3(predicted_dataframe, s3_bucket_name, s3_object_key)
 
             return predicted_dataframe
 
         except Exception as e:
             raise MoneyLaunderingException(e, sys)
+
+    # def initiate_prediction(self,) -> None:
+    #     try:
+    #         dataframe = self.get_data()
+
+    #         predicted_arr = self.predict(dataframe)
+            
+    #         prediction = pd.DataFrame(list(predicted_arr))
+
+    #         prediction.columns = ["class"]
+
+    #         prediction.replace(TargetValueMapping().reverse_mapping(), inplace=True)
+
+    #         predicted_dataframe = pd.concat([dataframe, prediction], axis=1)
+            
+    #         logging.info("Uploaded artifacts folder to s3 bucket_name")
+
+    #         return predicted_dataframe
+
+    #     except Exception as e:
+    #         raise MoneyLaunderingException(e, sys)
+
+if __name__ == "__main__":
+    prediction_pipeline = PredictionPipeline()
+
+    prediction_pipeline.initiate_prediction()

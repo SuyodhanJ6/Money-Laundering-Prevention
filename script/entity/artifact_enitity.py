@@ -130,3 +130,8 @@ class ModelPusherArtifact:
 
     saved_model_path: str
     model_file_path: str
+
+@dataclass
+class ModelPredictionArtifact:
+    model_prediction_path: str
+    predction_file_name: str

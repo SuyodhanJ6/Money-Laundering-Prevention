@@ -1,5 +1,7 @@
 import os 
 from script.constant.s3_bucket import TRAINING_BUCKET_NAME
+from datasets import load_dataset
+import pandas as pd
 
 SAVED_MODEL_DIR =os.path.join("saved_models")
 
@@ -12,10 +14,21 @@ FILE_NAME : str = "money_laund.csv"
 TEST_FILE_NAME: str = "test.csv"
 TRAIN_FILE_NAME: str = "train.csv"
 
+# Set a temporary cache directory to avoid caching warnings
+# cache_dir = "/tmp/huggingface_cache"
+
 # Dataset Path
 DATASET_PATH_CLASS = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_classes.csv"
+#load_dataset("SuodhanJ6/elliptic_txs_classes", split="train")
+# DATASET_PATH_CLASS = pd.DataFrame(DATASET_PATH_CLASS)
+
 DATASET_PATH_FEATURE = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_features.csv"
+#load_dataset("SuodhanJ6/elliptic_txs_features", split="train")
+# DATASET_PATH_FEATURE = pd.DataFrame(DATASET_PATH_FEATURE)
+
 DATASET_PATH_EDGE_ID = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_edgelist.csv"
+#load_dataset("SuodhanJ6/elliptic_txs_edgelist", split="train")
+# DATASET_PATH_EDGE_ID = pd.DataFrame(DATASET_PATH_EDGE_ID)
 
 PREPROCSSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 MODEL_FILE_NAME = "model.pkl"
@@ -83,3 +96,9 @@ Model Pusher ralated constant start with MODE PUSHER VAR NAME
 """
 MODEL_PUSHER_DIR_NAME = "model_pusher"
 MODEL_PUSHER_SAVED_MODEL_DIR = SAVED_MODEL_DIR
+
+"""
+Model Prediction ralated constant 
+"""
+MODEL_PRECTION_DIR_NAME = "model_prediction"
+MODEL_PRECTION_FILE_NAME = "predicted_results"
