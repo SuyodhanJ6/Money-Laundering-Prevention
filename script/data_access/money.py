@@ -144,3 +144,18 @@ class Money:
             # #("Error occurred while merging datasets: %s", str(e))
             raise MoneyLaunderingException(e, sys)
 
+
+if __name__ == "__main__":
+    try:
+        money = Money()
+        merged_data = money.merge_dataset()
+        
+        # The code beyond this point should handle the merged_data as needed
+        # Add your deployment logic here
+
+    except MoneyLaunderingException as mle:
+        # Handle custom exceptions gracefully
+        logging.error(f"Money Laundering Exception: {str(mle)}")
+    except Exception as e:
+        # Handle other exceptions gracefully
+        logging.error(f"An unexpected error occurred: {str(e)}")
