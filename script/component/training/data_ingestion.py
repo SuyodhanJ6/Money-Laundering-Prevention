@@ -1,4 +1,4 @@
-import os, sys
+import os
 import pandas as pd 
 from pandas import DataFrame
 from sklearn.model_selection import train_test_split
@@ -29,7 +29,7 @@ class DataIngestion:
             logging.info("Entered DataIngestion class.")
 
         except Exception as e:
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 
     def export_local_dataset_to_feature_store(self) -> pd.DataFrame:
         """
@@ -64,7 +64,7 @@ class DataIngestion:
         
         except Exception as e:
             logging.error("Error occurred during dataset export: %s", str(e))
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 
 
 
@@ -100,7 +100,7 @@ class DataIngestion:
             
         except Exception as e:
             logging.error("Error occurred during train-test split: %s", str(e))
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 
 
     def initiate_data_ingestion(self) -> DataIngestionArtifact:
@@ -142,5 +142,5 @@ class DataIngestion:
 
         except Exception as e:
             logging.error("Error occurred during data ingestion: %s", str(e))
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 

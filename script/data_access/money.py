@@ -1,4 +1,4 @@
-import os, sys
+import os
 import pandas as pd 
 from typing import Tuple
 
@@ -67,7 +67,7 @@ class Money:
         except Exception as e:
             # If an exception occurs during the operation, log it and raise an exception
             logging.error("Error occurred while reading CSV files: %s", str(e))
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 
     
     def change_column_names(self, df_feature: pd.DataFrame) -> pd.DataFrame:
@@ -107,7 +107,7 @@ class Money:
         except Exception as e:
             # If an exception occurs during the operation, log it and raise an exception
             logging.error("Error occurred while changing column names: %s", str(e))
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 
 
     def merge_dataset(self) -> pd.DataFrame:
@@ -143,5 +143,5 @@ class Money:
         except Exception as e:
             # If an exception occurs during the operation, log it and raise an exception
             logging.error("Error occurred while merging datasets: %s", str(e))
-            raise MoneyLaunderingException(e, sys)
+            raise MoneyLaunderingException(e)
 
