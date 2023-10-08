@@ -323,6 +323,6 @@ class TrainPipeline:
             # If an exception occurs, raise it with error details
             raise MoneyLaunderingException(e, sys)
 
-# if __name__ == "__main__":
-#      train_pipeline = TrainPipeline() 
-#      train_pipeline.run_pipeline()
+if __name__ == "__main__":
+     train_pipeline = TrainPipeline() 
+     train_pipeline.run_pipeline()

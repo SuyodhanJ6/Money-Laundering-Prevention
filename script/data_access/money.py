@@ -1,4 +1,4 @@
-import os
+import sys
 import pandas as pd 
 from typing import Tuple
 
@@ -32,7 +32,7 @@ class Money:
 
         except Exception as e:
             # If an exception occurs during initialization, raise it with error details
-            raise MoneyLaunderingException(e)
+            raise MoneyLaunderingException(e,sys)
 
 
 
@@ -66,8 +66,8 @@ class Money:
 
         except Exception as e:
             # If an exception occurs during the operation, log it and raise an exception
-            logging.error("Error occurred while reading CSV files: %s", str(e))
-            raise MoneyLaunderingException(e)
+            # logging.error("Error occurred while reading CSV files: %s", str(e))
+            raise MoneyLaunderingException(e, sys)
 
     
     def change_column_names(self, df_feature: pd.DataFrame) -> pd.DataFrame:
@@ -89,7 +89,7 @@ class Money:
             logging.info("Entered change_column_names method.")
 
             # Call the save_csv_files method to read class and feature CSV files
-            _, df_feature = self.save_csv_files()
+            df_class, df_feature = self.save_csv_files()
             
             # Define the new column names
             colNames = ['txId', 'Time_step']
@@ -105,9 +105,7 @@ class Money:
             return df_feature
 
         except Exception as e:
-            # If an exception occurs during the operation, log it and raise an exception
-            logging.error("Error occurred while changing column names: %s", str(e))
-            raise MoneyLaunderingException(e)
+            raise MoneyLaunderingException(e, sys)
 
 
     def merge_dataset(self) -> pd.DataFrame:
@@ -141,7 +139,7 @@ class Money:
             return dataframe
             
         except Exception as e:
-            # If an exception occurs during the operation, log it and raise an exception
-            logging.error("Error occurred while merging datasets: %s", str(e))
-            raise MoneyLaunderingException(e)
+            # # If an exception occurs during the operation, log it and raise an exception
+            # logging.error("Error occurred while merging datasets: %s", str(e))
+            raise MoneyLaunderingException(e, sys)
 
