@@ -26,40 +26,28 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 @app.get("/", tags=["authentication"])
 async def index():
     return RedirectResponse(url="/docs")
-
-    
 
 @app.get("/train")
 async def trainRouteClient():
     try:
         train_pipeline = TrainPipeline()
-
         train_pipeline.run_pipeline()
-
-        return Response("Training successful !!")
-
+        return {"message": "Training successful!"}
     except Exception as e:
-        return Response(f"Error Occurred! {e}")
-
-    
+        return {"error": f"Error occurred during training: {str(e)}"}
 
 @app.get("/predict")
 async def predictRouteClient():
     try:
         prediction_pipeline = PredictionPipeline()
-
-        prediction_pipeline.initiate_prediction()
-
-        return Response(
-            "Prediction successful and predictions are stored in s3 bucket !!"
-        )
+        predicted_dataframe = prediction_pipeline.initiate_prediction()
+        # You can return the prediction results as JSON or any other format
+        return {"message": "Prediction successful!", "predictions": predicted_dataframe.to_dict()}
     except Exception as e:
-        return Response(f"Error Occurred! {e}")
+        return {"error": f"Error occurred during prediction: {str(e)}"}
 
 if __name__ == "__main__":
-    app_run(app=app, host= APP_HOST, port= APP_PORT)
-    
+    app_run(app=app, host=APP_HOST, port=APP_PORT)

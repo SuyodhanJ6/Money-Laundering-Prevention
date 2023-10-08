@@ -2,6 +2,7 @@ import os, sys
 import pandas as pd 
 from typing import Tuple
 
+from script.cloud_storage.s3_data_reader import read_s3_csv_to_dataframe
 from script.constant.training_pipeline import *
 from script.exception import MoneyLaunderingException
 from script.logger import logging
@@ -35,7 +36,7 @@ class Money:
 
 
 
-    def save_csv_files(self, class_file_path: str, feature_file_path: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def save_csv_files(self,) -> Tuple[pd.DataFrame, pd.DataFrame]:
         """
         Method Name: save_csv_files
         Description: Reads class and feature CSV files and returns their DataFrames.
@@ -55,8 +56,8 @@ class Money:
             logging.info("Entered save_csv_files method.")
 
             # Read class and feature CSV files
-            df_class = pd.read_csv(class_file_path)
-            df_feature = pd.read_csv(feature_file_path)
+            df_class = read_s3_csv_to_dataframe(bucket_name=dataset_bucket_name, file_name=DATASET_PATH_CLASS)
+            df_feature = read_s3_csv_to_dataframe(bucket_name=dataset_bucket_name, file_name=DATASET_PATH_FEATURE)
             
             # Log successful read operation
             logging.info("CSV files read successfully.")
@@ -88,7 +89,7 @@ class Money:
             logging.info("Entered change_column_names method.")
 
             # Call the save_csv_files method to read class and feature CSV files
-            _, df_feature = self.save_csv_files(self.class_dataset_file_path, self.feature_dataset_file_path)
+            _, df_feature = self.save_csv_files()
             
             # Define the new column names
             colNames = ['txId', 'Time_step']
@@ -125,7 +126,7 @@ class Money:
             logging.info("Entered merge_dataset method.")
 
             # Call the save_csv_files method to read class and feature CSV files
-            df_class, df_feature = self.save_csv_files(self.class_dataset_file_path, self.feature_dataset_file_path)
+            df_class, df_feature = self.save_csv_files()
 
             # Call the change_column_names method to change column names in the feature DataFrame
             df_feature = self.change_column_names(df_feature)

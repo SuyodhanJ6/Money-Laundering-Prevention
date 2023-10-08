@@ -17,18 +17,24 @@ TRAIN_FILE_NAME: str = "train.csv"
 # Set a temporary cache directory to avoid caching warnings
 # cache_dir = "/tmp/huggingface_cache"
 
-# Dataset Path
-DATASET_PATH_CLASS = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_classes.csv"
-#load_dataset("SuodhanJ6/elliptic_txs_classes", split="train")
-# DATASET_PATH_CLASS = pd.DataFrame(DATASET_PATH_CLASS)
+# # Dataset Path
+# DATASET_PATH_CLASS = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_classes.csv"
+# #load_dataset("SuodhanJ6/elliptic_txs_classes", split="train")
+# # DATASET_PATH_CLASS = pd.DataFrame(DATASET_PATH_CLASS)
 
-DATASET_PATH_FEATURE = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_features.csv"
-#load_dataset("SuodhanJ6/elliptic_txs_features", split="train")
-# DATASET_PATH_FEATURE = pd.DataFrame(DATASET_PATH_FEATURE)
+# DATASET_PATH_FEATURE = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_features.csv"
+# #load_dataset("SuodhanJ6/elliptic_txs_features", split="train")
+# # DATASET_PATH_FEATURE = pd.DataFrame(DATASET_PATH_FEATURE)
 
-DATASET_PATH_EDGE_ID = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_edgelist.csv"
-#load_dataset("SuodhanJ6/elliptic_txs_edgelist", split="train")
-# DATASET_PATH_EDGE_ID = pd.DataFrame(DATASET_PATH_EDGE_ID)
+# DATASET_PATH_EDGE_ID = "/home/suyodhan/Money-Laundering-Prevention/dataset/elliptic_txs_edgelist.csv"
+# #load_dataset("SuodhanJ6/elliptic_txs_edgelist", split="train")
+# # DATASET_PATH_EDGE_ID = pd.DataFrame(DATASET_PATH_EDGE_ID)
+
+"""DATASET from s3 BCKET"""
+dataset_bucket_name = 'datasetbucket1'
+DATASET_PATH_CLASS = 'dataset/elliptic_txs_classes.csv'
+DATASET_PATH_FEATURE = 'dataset/elliptic_txs_features.csv'
+DATASET_PATH_EDGE_ID = 'dataset/elliptic_txs_edgelist.csv'
 
 PREPROCSSING_OBJECT_FILE_NAME = "preprocessing.pkl"
 MODEL_FILE_NAME = "model.pkl"
