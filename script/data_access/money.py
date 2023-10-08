@@ -96,12 +96,13 @@ class Money:
             colNames += [f'Local_feature_{i}' for i in range(1, 94)]
             colNames += [f'Aggregate_feature_{i}' for i in range(1, 73)]
 
+            logging.info(f"df_feature head : {df_feature.head()}")
             # Rename the columns of the DataFrame
             df_feature.columns = colNames
             
             # Log successful column renaming
             logging.info("Column names changed successfully.")
-
+            logging.info(f"df_feature head : {df_feature.head()}")
             return df_feature
 
         except Exception as e:
