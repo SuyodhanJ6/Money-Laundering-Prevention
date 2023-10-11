@@ -1,3 +1,6 @@
+# Deployment Link
+http://ec2-13-232-78-105.ap-south-1.compute.amazonaws.com/docs
+
 # Money-Laundering Prevention
 
 ## Problem Statement
