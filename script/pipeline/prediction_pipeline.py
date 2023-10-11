@@ -6,10 +6,11 @@ import boto3
 
 from script.logger import logging
 from script.exception import MoneyLaunderingException
+from script.cloud_storage.s3_data_reader import read_s3_csv_to_dataframe
 from script.entity.config_enitity import PredictionPipelineConfig
 from script.utils.main_utils import read_yaml_file, load_object
 from script.constant.training_pipeline import SCHEMA_FILE_PATH 
-from script.constant.prediction_pipeline import PREDICTION_INPUT_FILE_PATH 
+from script.constant.prediction_pipeline import PREDICTION_INPUT_FILE_PATH,dataset_bucket_name
 from script.ml.model.estimetor import ModelResolver, Money_Laundering, TargetValueMapping
 
 
@@ -29,15 +30,17 @@ class PredictionPipeline:
             
             logging.info("Entered get_data method of PredictionPipeline class")
 
-            prediction_df = pd.read_csv(PREDICTION_INPUT_FILE_PATH)
+            prediction_df =  read_s3_csv_to_dataframe(bucket_name=dataset_bucket_name, file_name=PREDICTION_INPUT_FILE_PATH) 
 
             prediction_df = prediction_df.head(20000)
 
             logging.info("Read prediction csv file Local Fodlder")
 
             prediction_df = prediction_df.drop(self.schema_config['drop_columns'], axis=1)
+            
 
-            logging.info("Dropped the required columns")
+
+            logging.info(f"Dropped the required columns head:{prediction_df.head()}")
 
             logging.info("Exited the get_data method of PredictionPipeline class")
 

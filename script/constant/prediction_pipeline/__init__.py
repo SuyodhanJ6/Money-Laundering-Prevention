@@ -12,12 +12,12 @@ MODEL_BUCKET_NAME = TRAINING_BUCKET_NAME
 
 
 import os
-
+dataset_bucket_name = 'datasetbucket1'
 # Define the constant for the input file name
-PREDICTION_INPUT_FILE_NAME = "dataset.csv"
+PREDICTION_INPUT_FILE_PATH = "dataset/dataset.csv"
 
-# Define the path to the dataset folder
-DATASET_FOLDER = "/home/suyodhan/Money-Laundering-Prevention/dataset"
+# # Define the path to the dataset folder
+# DATASET_FOLDER = "/home/suyodhan/Money-Laundering-Prevention/dataset"
 
-# Complete the path to the input file within the dataset folder
-PREDICTION_INPUT_FILE_PATH = os.path.join(DATASET_FOLDER, PREDICTION_INPUT_FILE_NAME)
+# # Complete the path to the input file within the dataset folder
+# PREDICTION_INPUT_FILE_PATH = os.path.join(DATASET_FOLDER, PREDICTION_INPUT_FILE_NAME)

@@ -1,4 +1,4 @@
-name: CI/CD Workflow
+name: workflow
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Lint code
         run: echo "Linting repository"
@@ -31,13 +31,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install Utilities
         run: |
           sudo apt-get update
           sudo apt-get install -y jq unzip
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -58,17 +57,18 @@ jobs:
         run: |
           # Build a docker container and
           # push it to ECR so that it can
-          # be deployed.
+          # be deployed to ECS.
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
-
-  continuous-deployment:
+          
+          
+  Continuous-Deployment:
     needs: build-and-push-ecr-image
     runs-on: self-hosted
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -81,13 +81,25 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
       
+      
       - name: Pull latest images
         run: |
          docker pull 112869101806.dkr.ecr.ap-south-1.amazonaws.com/money-laundering-prevention-app:latest
-        
-    #   - name: Stop and remove container if running
-    #     run: |
-    #      docker ps -q --filter "name=my-container" | grep -q . && docker stop my-container && docker rm -fv my-container
+
+
+      # - name: Stop and remove sensor container if running
+      #   run: |
+      #    docker ps -q --filter "name=sensor" | grep -q . && docker stop sensor && docker rm -fv sensor
+      
+       
+      - name: Run Docker Image to serve users
+        run: |
+         docker run -d -p 80:8080 --name=sensor -e 'MONGO_DB_URL=${{ secrets.MONGO_DB_URL }}' -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -e 'AWS_REGION=${{ secrets.AWS_REGION }}' 112869101806.dkr.ecr.ap-south-1.amazonaws.com/money-laundering-prevention-app:latest
+
+         
+      - name: Clean previous images and containers
+        run: |
+         docker system prune -f
     
 
       - name: Run Docker Image

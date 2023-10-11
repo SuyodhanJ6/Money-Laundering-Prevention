@@ -260,9 +260,10 @@ class PredictionPipelineConfig:
         try:
             # Initialize class attributes with default or provided settings
             
-            data_file_path: str = prediction_pipeline.PREDICTION_INPUT_FILE_NAME
+            # data_file_path: str = prediction_pipeline.PREDICTION_INPUT_FILE_NAME
 
             # model_file_path: str = os.path.join(MODEL_PUSHER_S3_KEY, MODEL_FILE_NAME)
+            pass
         
         except Exception as e:
             # If an exception occurs during initialization, raise it with error details

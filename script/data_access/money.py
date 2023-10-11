@@ -4,6 +4,8 @@ from typing import Tuple
 
 from script.cloud_storage.s3_data_reader import read_s3_csv_to_dataframe
 from script.constant.training_pipeline import *
+from script.utils.main_utils import read_yaml_file, load_object
+from script.constant.training_pipeline import SCHEMA_FILE_PATH 
 from script.exception import MoneyLaunderingException
 from script.logger import logging
 
@@ -29,6 +31,7 @@ class Money:
             # Initialize class attributes with provided or default dataset file paths
             self.class_dataset_file_path = class_dataset_file_path
             self.feature_dataset_file_path = feature_dataset_file_path
+            self.schema_config = read_yaml_file(SCHEMA_FILE_PATH)
 
         except Exception as e:
             # If an exception occurs during initialization, raise it with error details
@@ -132,6 +135,9 @@ class Money:
 
             # Merge the dataframes based on 'txId' column and select the first 20000 rows
             dataframe = df_feature.merge(df_class, on='txId', how='left')
+
+            # dataframe = dataframe.drop(self.schema_config['drop_columns'], axis=1)
+
             dataframe = dataframe.head(20000)
 
             # Log successful dataset merging
@@ -145,17 +151,17 @@ class Money:
             raise MoneyLaunderingException(e, sys)
 
 
-if __name__ == "__main__":
-    try:
-        money = Money()
-        merged_data = money.merge_dataset()
+# if __name__ == "__main__":
+#     try:
+#         money = Money()
+#         merged_data = money.merge_dataset()
         
-        # The code beyond this point should handle the merged_data as needed
-        # Add your deployment logic here
+#         # The code beyond this point should handle the merged_data as needed
+#         # Add your deployment logic here
 
-    except MoneyLaunderingException as mle:
-        # Handle custom exceptions gracefully
-        logging.error(f"Money Laundering Exception: {str(mle)}")
-    except Exception as e:
-        # Handle other exceptions gracefully
-        logging.error(f"An unexpected error occurred: {str(e)}")
+#     except MoneyLaunderingException as mle:
+#         # Handle custom exceptions gracefully
+#         logging.error(f"Money Laundering Exception: {str(mle)}")
+#     except Exception as e:
+#         # Handle other exceptions gracefully
+#         logging.error(f"An unexpected error occurred: {str(e)}")
